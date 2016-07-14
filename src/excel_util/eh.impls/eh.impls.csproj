@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{600C0618-4A5D-4526-A6FE-DB50EDE317E7}</ProjectGuid>
+    <ProjectGuid>{31840211-1F94-42B0-A1F2-930785ACF0F0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>attributes</RootNamespace>
-    <AssemblyName>attributes</AssemblyName>
+    <RootNamespace>eh.impls</RootNamespace>
+    <AssemblyName>eh.impls</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -31,6 +31,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,19 +55,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColAttribute.cs" />
-    <Compile Include="ColDataConstraintAttribute.cs" />
-    <Compile Include="ColDataValidAttribute.cs" />
-    <Compile Include="ColAbsValidateAttriute.cs" />
-    <Compile Include="enums\ConstraintsEnum.cs" />
-    <Compile Include="enums\DataTypeEnum.cs" />
+    <Compile Include="AbsExcelBuilder.cs" />
+    <Compile Include="configurations\ExcelConfiguration.cs" />
+    <Compile Include="DefaultExcelBuilder.cs" />
+    <Compile Include="errs\ErrMsg.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\eh.util\eh.util.csproj">
-      <Project>{c749f112-3a04-4d69-9f33-1c087e56fb16}</Project>
-      <Name>eh.util</Name>
+    <ProjectReference Include="..\eh.interfaces\eh.interfaces.csproj">
+      <Project>{7d891c0b-738f-45e2-b7d4-f0a09f24eae0}</Project>
+      <Name>eh.interfaces</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
