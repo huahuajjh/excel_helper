@@ -7,6 +7,6 @@ namespace eh.attributes.enums
 {
     public enum ConstraintsEnum
     {
-        NOTNULL, NULL
+        NOTNULL, NULL,UNIQUE,MAX_LENGTH,MIN_LENGTH
     }
 }

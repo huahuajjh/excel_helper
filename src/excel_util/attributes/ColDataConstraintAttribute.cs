@@ -6,42 +6,46 @@ using eh.attributes.enums;
 
 namespace eh.attributes
 {
-    public class ColDataConstraintAttribute:ColAbsValidateAttriute
+    public class ColDataConstraintAttribute:Attribute,IColAbsValidateAttriute
     {
         private string ErrMsg { get; set; }
-        public ConstraintsEnum Constraint { get; set; }
-        public ColDataConstraintAttribute(ConstraintsEnum _constraint)
+        public ConstraintsEnum[] Constraints { get; set; }
+        public ColDataConstraintAttribute(params ConstraintsEnum[] _constraints)
         {
-            this.Constraint = _constraint;
+            this.Constraints = _constraints;
         }
-        public override bool Validate(object _cell_data, int _col_index, string _col_name)
+        public bool Validate(object _cell_data, int _col_index, string _col_name)
         {
-            switch (Constraint)
+            foreach (var c in Constraints)
             {
-                case ConstraintsEnum.NOTNULL:
+                switch (c)
                 {
-                    if (_cell_data==null)
-                    {
-                        PrintErrMsg(_col_index, _col_name, "不能传入空的值");
-                        return false;
-                    }
-                    else { return true; }
+                    case ConstraintsEnum.NOTNULL:
+                        {
+                            if (_cell_data == null)
+                            {
+                                SetErrMsg(_col_index, _col_name, "不能传入空的值");
+                                return false;
+                            }
+                            else { return true; }
+                        }
+
+                    case ConstraintsEnum.NULL:
+                        return true;
+
+                    default:
+                        return true;
                 }
-
-                case ConstraintsEnum.NULL:
-                    return true;
-
-                default:
-                    return true;
             }
+            return true;
         }
 
-        public override string GetErrMsg()
+        public string GetErrMsg()
         {
             return this.ErrMsg;
         }
 
-        private void PrintErrMsg(int _col_index, string _col_name,string _err_msg)
+        private void SetErrMsg(int _col_index, string _col_name, string _err_msg)
         {
             this.ErrMsg = String.Format("第[{0}]行,[{1}]列错误,{2}",_col_index,_col_name,_err_msg);
         }

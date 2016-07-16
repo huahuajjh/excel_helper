@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using eh.impls.errs;
+using System.IO;
 
 namespace eh.impls
 {
@@ -30,19 +31,13 @@ namespace eh.impls
             return this.ErrMsg;
         }
 
-        public override IList<T> Import<T>(System.IO.Stream _stream)
+        public IList<T> Import<T>(Stream _stream, string _filename)
         {
-            Type type = typeof(T);
-            T t = new T();
-
-            var props = type.GetProperties();
-
-
             return null;
 
         }
 
-        public override System.IO.MemoryStream Export<T>(IList<T> data)
+        public System.IO.MemoryStream Export<T>(IList<T> data)
         {
             throw new NotImplementedException();
         }

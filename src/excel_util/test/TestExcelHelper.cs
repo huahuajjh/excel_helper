@@ -17,8 +17,9 @@ namespace test
             var st = wb.GetSheetAt(cfg.SheetIndex);
             var row_num = st.LastRowNum;
 
-            System.Console.WriteLine(row_num);
-            System.Console.WriteLine(st.GetRow(row_num).GetCell(0));
+            //System.Console.WriteLine(row_num);
+            //System.Console.WriteLine(st.GetRow(row_num).GetCell(0));
+            System.Console.WriteLine(st.GetRow(10)==null);
         }
     }
 }

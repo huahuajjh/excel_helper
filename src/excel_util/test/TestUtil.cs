@@ -17,6 +17,7 @@ namespace eh.test
             Object o1 = new String(new char[]{'1','2'});
             Object o2 = new Int32();
             Assert.AreEqual(true, TypeUtil.CompType(o2.GetType(), o.GetType()));
+            Console.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
         }
     }
 }

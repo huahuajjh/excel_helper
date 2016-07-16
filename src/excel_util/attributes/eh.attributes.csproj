@@ -43,9 +43,12 @@
     <Compile Include="ColAttribute.cs" />
     <Compile Include="ColDataConstraintAttribute.cs" />
     <Compile Include="ColDataValidAttribute.cs" />
-    <Compile Include="ColAbsValidateAttriute.cs" />
+    <Compile Include="ColExportFormulaAttribute.cs" />
+    <Compile Include="ColExportStyleAttribute.cs" />
+    <Compile Include="IColAbsValidateAttriute.cs" />
     <Compile Include="enums\ConstraintsEnum.cs" />
     <Compile Include="enums\DataTypeEnum.cs" />
+    <Compile Include="IColExportAbsValidateAttibute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

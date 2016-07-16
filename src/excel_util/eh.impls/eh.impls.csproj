@@ -59,12 +59,23 @@
     <Compile Include="configurations\ExcelConfiguration.cs" />
     <Compile Include="DefaultExcelBuilder.cs" />
     <Compile Include="errs\ErrMsg.cs" />
+    <Compile Include="ExcelExportImpl.cs" />
+    <Compile Include="ExcelFactory.cs" />
+    <Compile Include="ExcelImportImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\attributes\eh.attributes.csproj">
+      <Project>{600c0618-4a5d-4526-a6fe-db50ede317e7}</Project>
+      <Name>eh.attributes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\eh.interfaces\eh.interfaces.csproj">
       <Project>{7d891c0b-738f-45e2-b7d4-f0a09f24eae0}</Project>
       <Name>eh.interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eh.util\eh.util.csproj">
+      <Project>{c749f112-3a04-4d69-9f33-1c087e56fb16}</Project>
+      <Name>eh.util</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

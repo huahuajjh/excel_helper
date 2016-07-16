@@ -9,6 +9,6 @@ namespace eh.interfaces
 {
     public interface IImport
     {
-        IList<T> Import<T>(Stream _stream) where T : new();
+        IList<T> Import<T>(Stream _stream,string _filename) where T : new();
     }
 }

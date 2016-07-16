@@ -7,6 +7,6 @@ namespace eh.attributes.enums
 {
     public enum DataTypeEnum
     {
-        STRING,INT,BOOL,DATE,DATETIME,FLOAT
+        STRING_N, INT_N, BOOL_N, DATE_N, DATETIME_N, FLOAT_N, STRING, INT, BOOL, DATE, DATETIME, FLOAT
     }
 }
