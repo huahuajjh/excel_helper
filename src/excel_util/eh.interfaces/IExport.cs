@@ -9,6 +9,6 @@ namespace eh.interfaces
 {
     public interface IExport
     {
-        MemoryStream Export<T>(IList<T> data);
+        Byte[] Export<T>(IList<T> data);
     }
 }

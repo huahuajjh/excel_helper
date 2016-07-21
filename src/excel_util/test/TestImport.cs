@@ -1,4 +1,5 @@
-﻿using eh.attributes;
+﻿using attributes;
+using eh.attributes;
 using eh.attributes.enums;
 using eh.impls;
 using eh.impls.configurations;
@@ -20,8 +21,8 @@ namespace test
         public void TestImportExcel()
         {
             ErrMsg msg = new ErrMsg();
-            IImport import = ExcelFactory.Instance().GetExcelImporter(new ExcelConfiguration(),msg);
-            IList<Person> list = import.Import<Person>(new FileStream(@"D:\projects\excel_helper\docs\p.xlsx", FileMode.Open), "p.xlsx");
+            IImport import = ExcelFactory.Instance().GetExcelImporter(new ExcelConfiguration(2, 0, 0),msg);
+            IList<Ticket> list = import.Import<Ticket>(new FileStream(@"G:\路线导入模板.xls", FileMode.Open));
             if (msg.Count > 0)
             {
                 foreach (var e in msg.GetErrors())
@@ -34,34 +35,62 @@ namespace test
                 Console.WriteLine(list.Count);
                 foreach (var item in list)
                 {
-                    Console.WriteLine(item);
+                    Console.WriteLine(item.Name);
                 }
             }
         }
     }
 
-    public class Person
+    public class Ticket
     {
-        [Col(1, "B")]
-        [ColDataValid(DataTypeEnum.INT_N)]
-
-        public int Age { get; set; }
-        
-        [Col(0, "A")]
-        public string Name { get; set; }
-
-        [Col(2,"C")]
+        [Col("A")]
         [ColDataValid(DataTypeEnum.STRING)]
         [ColDataConstraint(ConstraintsEnum.NOTNULL)]
-        public string gender { get; set; }
-        [Col(3,"D")]
-        [ColDataValid(DataTypeEnum.DATETIME_N)]
-        public DateTime Time { get; set; }
+        [ColDataMaxlength(20)]
+        public string Name { get; set; }
 
-        public override string ToString()
+        [Col("B")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        [ColDataID]
+        [ColDataMaxlength(200)]
+        public string Remarks { get; set; }
+
+        [Col("C")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        public string User { get; set; }
+
+        public string[] Users
         {
-            return "name=" + Name  + "   age=" + Age+"   gender="+gender+"   time="+Time;
+            get
+            {
+                if (string.IsNullOrEmpty(this.User)) return new string[0];
+                return this.User.Replace("，", ",").Split(',');
+            }
         }
-
     }
+
+    //public class Person
+    //{
+    //    [Col(1, "B")]
+    //    [ColDataValid(DataTypeEnum.INT_N)]
+
+    //    public int Age { get; set; }
+        
+    //    [Col(0, "A")]
+    //    public string Name { get; set; }
+
+    //    [Col(2, "C")]
+    //    [ColDataValid(DataTypeEnum.STRING)]
+    //    [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+    //    public string gender { get; set; }
+    //    [Col(3,"D")]
+    //    [ColDataValid(DataTypeEnum.DATETIME_N)]
+    //    public DateTime Time { get; set; }
+
+    //    public override string ToString()
+    //    {
+    //        return "name=" + Name  + "   age=" + Age+"   gender="+gender+"   time="+Time;
+    //    }
+
+    //}
 }

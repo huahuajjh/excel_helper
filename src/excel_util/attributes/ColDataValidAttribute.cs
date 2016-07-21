@@ -17,6 +17,7 @@ namespace eh.attributes
         private string ErrMsg { get; set; }
         public bool Validate(object _cell_data,int _row_index,string _col_name)
         {
+            if (_cell_data == null) return true;
             switch (DataType)
             {       
                 case DataTypeEnum.STRING:

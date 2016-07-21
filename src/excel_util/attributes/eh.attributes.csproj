@@ -40,8 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseColValidateAttriute.cs" />
     <Compile Include="ColAttribute.cs" />
     <Compile Include="ColDataConstraintAttribute.cs" />
+    <Compile Include="ColDataIDAttribute.cs" />
+    <Compile Include="ColDataMaxlengthAttribute.cs" />
+    <Compile Include="ColDataPhoneAttribute.cs" />
     <Compile Include="ColDataValidAttribute.cs" />
     <Compile Include="ColExportFormulaAttribute.cs" />
     <Compile Include="ColExportStyleAttribute.cs" />

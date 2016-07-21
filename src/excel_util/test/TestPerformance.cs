@@ -14,13 +14,13 @@ namespace test
     {
         public static void Main()
         {
-            ErrMsg msg = new ErrMsg();
-            IImport import = ExcelFactory.Instance().GetExcelImporter(new ExcelConfiguration(), msg);
-            IList<Person> list = import.Import<Person>(new FileStream(@"D:\projects\excel_helper\docs\p.xlsx", FileMode.Open), "p.xlsx");
-            foreach (var item in list)
-            {
-                Console.WriteLine(item);
-            }
+            //ErrMsg msg = new ErrMsg();
+            //IImport import = ExcelFactory.Instance().GetExcelImporter(new ExcelConfiguration(), msg);
+            //IList<Person> list = import.Import<Person>(new FileStream(@"D:\projects\excel_helper\docs\p.xlsx", FileMode.Open));
+            //foreach (var item in list)
+            //{
+            //    Console.WriteLine(item);
+            //}
         }
     }
 }
