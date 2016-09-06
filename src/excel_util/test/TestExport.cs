@@ -25,7 +25,7 @@ namespace test
             ErrMsg err = new ErrMsg();
             IExport export = ExcelFactory.Instance().GetExcelExporter(cfg, err);
             IList<Scenery> list = new List<Scenery>();
-            for (int i = 0; i < 300000; i++)
+            for (int i = 0; i < 300; i++)
             {
                 Scenery p = new Scenery();
                 p.Id = i;

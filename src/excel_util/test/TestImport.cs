@@ -22,7 +22,7 @@ namespace test
         {
             ErrMsg msg = new ErrMsg();
             IImport import = ExcelFactory.Instance().GetExcelImporter(new ExcelConfiguration(2, 0, 0),msg);
-            IList<Ticket> list = import.Import<Ticket>(new FileStream(@"G:\路线导入模板.xls", FileMode.Open));
+            IList<Ticket> list = import.Import<Ticket>(new FileStream(@"F:\importTicket.xls", FileMode.Open));
             if (msg.Count > 0)
             {
                 foreach (var e in msg.GetErrors())
@@ -51,22 +51,62 @@ namespace test
 
         [Col("B")]
         [ColDataValid(DataTypeEnum.STRING)]
-        [ColDataID]
-        [ColDataMaxlength(200)]
-        public string Remarks { get; set; }
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        [ColDataPhone]
+        public string Phone { get; set; }
 
         [Col("C")]
         [ColDataValid(DataTypeEnum.STRING)]
-        public string User { get; set; }
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        [ColDataID]
+        public string IdCard { get; set; }
 
-        public string[] Users
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(this.User)) return new string[0];
-                return this.User.Replace("，", ",").Split(',');
-            }
-        }
+        [Col("D")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        [ColDataEquals("男", "女")]
+        public string Gender { get; set; }
+
+        [Col("E")]
+        [ColDataValid(DataTypeEnum.INT)]
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        public int SceneryId { get; set; }
+
+        [Col("F")]
+        [ColDataValid(DataTypeEnum.DATETIME)]
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        public DateTime PlayTime { get; set; }
+
+        [Col("G")]
+        [ColDataValid(DataTypeEnum.INT)]
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        public int BuyNumber { get; set; }
+
+        [Col("H")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        [ColDataEquals("是", "否")]
+        public string IsPay { get; set; }
+
+        [Col("I")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        [ColDataMaxlength(20)]
+        public string Community { get; set; }
+
+        [Col("J")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        [ColDataMaxlength(20)]
+        public string Unit { get; set; }
+
+        [Col("K")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        [ColDataMaxlength(200)]
+        public string Remarks { get; set; }
+
+        [Col("L")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        [ColDataMaxlength(20)]
+        public string Recommender { get; set; }
     }
 
     //public class Person

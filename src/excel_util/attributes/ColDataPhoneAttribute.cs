@@ -16,7 +16,7 @@ namespace attributes
             this.row_index = _row_index;
             this.col_name = _col_name;
             if (_cell_data == null || string.IsNullOrEmpty(_cell_data.ToString())) return true;
-            return new Regex("^1[3|4|5|7|8]\\d{9}$").IsMatch(_cell_data.ToString());
+            return new Regex("^1[3|4|5|7|8][0-9]{9}$").IsMatch(_cell_data.ToString());
         }
 
         public override string GetErrMsg()

@@ -19,10 +19,7 @@ namespace eh.attributes
         {
             if (_cell_data == null) return true;
             switch (DataType)
-            {       
-                case DataTypeEnum.STRING:
-                    return Check(typeof(string), _cell_data.GetType(), _row_index, _col_name, "字符串");
-
+            {
                 case DataTypeEnum.INT:
                     return Check(typeof(int), _cell_data.GetType(), _row_index, _col_name, "整数");
 
@@ -34,11 +31,6 @@ namespace eh.attributes
 
                 case DataTypeEnum.FLOAT:
                     return Check(typeof(float), _cell_data.GetType(), _row_index, _col_name, "小数");
-
-
-                case DataTypeEnum.STRING_N:
-                    if (_cell_data as Type == typeof(Nullable)) return true;
-                    else return Check(typeof(string), _cell_data.GetType(), _row_index, _col_name, "字符串");
 
                 case DataTypeEnum.INT_N:
                     if (_cell_data as Type == typeof(Nullable)) return true;
@@ -57,8 +49,7 @@ namespace eh.attributes
                     else return Check(typeof(float), _cell_data.GetType(), _row_index, _col_name, "小数");
 
                 default:
-                    this.ErrMsg = String.Format("{0}行,{1}列错误,未识别的数据类型", _row_index, _col_name);
-                    return false;
+                    return true;
             }
         }
         public string GetErrMsg()

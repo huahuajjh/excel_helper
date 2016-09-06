@@ -90,11 +90,9 @@ namespace eh.util.helper
         }
         public static IWorkbook CreateWorkbook(int version,string path)
         {
-            FileInfo info = new FileInfo(path);
-            using (System.IO.MemoryStream memStream = new System.IO.MemoryStream())
+            using(FileStream fs = File.OpenRead(path))
             {
-                info.Open(FileMode.OpenOrCreate).CopyTo(memStream);
-                return new XSSFWorkbook(memStream);
+                return new XSSFWorkbook(fs);
             }
         }
         private static IWorkbook CreateWb2003Or2007(Stream stream)

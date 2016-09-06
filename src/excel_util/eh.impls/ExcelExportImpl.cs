@@ -15,6 +15,7 @@ namespace eh.impls
 {
     public class ExcelExportImpl:IExport
     {
+        private IWorkbook workbook;
         private ExcelConfiguration Cfg { get; set; }
         private ErrMsg ErrMsg { get; set; }
         public ExcelExportImpl(ExcelConfiguration cfg,ErrMsg msg)
@@ -24,18 +25,18 @@ namespace eh.impls
         }
         public byte[] Export<T>(IList<T> data)
         {
-            IWorkbook wb = ExcelHelper.CreateWorkbook((int)Cfg.ExcelVersion, Cfg.TemplatePath);
+            workbook = ExcelHelper.CreateWorkbook((int)Cfg.ExcelVersion, Cfg.TemplatePath);
             try
             {
-                ISheet st = wb.GetSheetAt(Cfg.TemplateSheetIndex);
+                ISheet st = workbook.GetSheetAt(Cfg.TemplateSheetIndex);
 
                 IteratorObj<T>(st, data);
 
                 using (var ms = new MemoryStream())
                 {
-                    if (wb != null)
+                    if (workbook != null)
                     {
-                        wb.Write(ms);
+                        workbook.Write(ms);
                         if (ms != null)
                         {
                             return ms.GetBuffer();
@@ -53,7 +54,7 @@ namespace eh.impls
             }
             finally
             {
-                wb.Close();
+                workbook.Close();
             }
         }
 
@@ -89,9 +90,15 @@ namespace eh.impls
 
             else if (prop.PropertyType == typeof(bool)) cell.SetCellValue((bool)prop.GetValue(o, null));
 
-            else if (prop.PropertyType == typeof(DateTime)) cell.SetCellValue((DateTime)prop.GetValue(o, null));
+            else if (prop.PropertyType == typeof(DateTime))
+            {
+                cell.SetCellValue((DateTime)prop.GetValue(o, null));
+                ICellStyle styledate = workbook.CreateCellStyle();
+                styledate.DataFormat = 0x16;
+                cell.CellStyle = styledate;
+            }
 
-            else if(prop.PropertyType == typeof(string)) cell.SetCellValue((string)prop.GetValue(o, null));
+            else if (prop.PropertyType == typeof(string)) cell.SetCellValue((string)prop.GetValue(o, null));
 
             else throw new NullReferenceException("不支持该类型");
         }

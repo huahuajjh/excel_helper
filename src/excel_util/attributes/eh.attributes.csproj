@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseColValidateAttriute.cs" />
+    <Compile Include="ColDataEqualsAttribute.cs" />
     <Compile Include="ColAttribute.cs" />
     <Compile Include="ColDataConstraintAttribute.cs" />
     <Compile Include="ColDataIDAttribute.cs" />
