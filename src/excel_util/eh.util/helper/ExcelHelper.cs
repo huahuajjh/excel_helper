@@ -9,20 +9,12 @@ namespace eh.util.helper
 {
     public static class ExcelHelper
     {
-        public static IWorkbook GenerateWorkbook(Stream stream,string _filename)
+        public static IWorkbook GenerateWorkbook(Stream stream)
         {
-            if (!_filename.EndsWith(".xls") && !_filename.EndsWith(".xlsx"))
+            using(stream)
             {
-                throw new WrongFileTypeException("错误的文件类型,请上传excel格式的文件类型");
+                return CreateWb2003Or2007(stream);
             }
-            else
-            {
-                using(stream)
-                {
-                    return CreateWb2003Or2007(stream,_filename);
-                }
-            }
-
         }
 
         public static IWorkbook GenerateWorkbook(String _filename)
@@ -30,7 +22,7 @@ namespace eh.util.helper
             var fs = new FileStream(_filename,FileMode.Open);
             using(fs)
             {
-                return GenerateWorkbook(fs,_filename);
+                return GenerateWorkbook(fs);
             }
         }
 
@@ -71,6 +63,7 @@ namespace eh.util.helper
 
         public static Object GetCellValue(ICell cell)
         {
+            if (cell == null) return null;
             switch (cell.CellType)
             {
                 case CellType.Blank:
@@ -103,20 +96,22 @@ namespace eh.util.helper
                 else return new XSSFWorkbook(fs);
             }
         }
-        private static IWorkbook CreateWb2003Or2007(Stream stream, string _filename)
+        private static IWorkbook CreateWb2003Or2007(Stream stream)
         {
             IWorkbook wb = null;
             try {
-                if (_filename.EndsWith(".xls"))
+                if (NPOI.POIFS.FileSystem.POIFSFileSystem.HasPOIFSHeader(stream))
                 {
                     wb = new HSSFWorkbook(stream);
                     return wb;
                 }
-                else
+                else if (NPOI.POIXMLDocument.HasOOXMLHeader(stream))
                 {
                     wb = new XSSFWorkbook(stream);
                     return wb;
                 }
+                
+                throw new WrongFileTypeException("错误的文件类型");
             }catch(Exception ex)
             {
                 throw new WrongFileTypeException("错误的文件类型,请上传excel格式的文件类型-"+ex.Message);

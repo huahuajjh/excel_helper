@@ -30,23 +30,30 @@ namespace eh.impls
         {
             return this.ErrMsg;
         }
-        public IList<T> Import<T>(Stream _stream, string _filename) where T : new()
+        public IList<T> Import<T>(Stream _stream) where T : new()
         {
-            IWorkbook wb = ExcelHelper.GenerateWorkbook(_stream,_filename);
-            ISheet st = wb.GetSheetAt(Cfg.SheetIndex);
-            var list = IterateRow<T>(st);
-            if (this.ErrMsg.Count > 0)
+            IWorkbook wb = ExcelHelper.GenerateWorkbook(_stream);
+            try
             {
-                return null;
+                ISheet st = wb.GetSheetAt(Cfg.SheetIndex);
+                var list = IterateRow<T>(st);
+                if (this.ErrMsg.Count > 0)
+                {
+                    return null;
+                }
+                return list;
             }
-            return list;
+            finally
+            {
+                wb.Close();
+            }
         }
 
         private IList<K> IterateRow<K>(ISheet st) where K:new()
         {
             IList<K> list = new List<K>();
             int _row_count = st.LastRowNum;
-            for (int i = Cfg.RowIndex; i < _row_count; i++)
+            for (int i = Cfg.RowIndex; i <= _row_count; i++)
             {
                 IRow _row = st.GetRow(i);
                 if (_row == null) continue;
@@ -67,13 +74,14 @@ namespace eh.impls
             foreach (var p in props)
             {
                 var valid_attrs = p.GetCustomAttributes(typeof(IColAbsValidateAttriute), true) as IColAbsValidateAttriute[];
+                if (valid_attrs.Length <= 0) continue;
                 var col_attr = Attribute.GetCustomAttribute(p, typeof(ColAttribute)) as ColAttribute;
 
                 //validate data's efficiency
                 foreach (var valid_attr in valid_attrs)
                 {
                     bool r = valid_attr.Validate(ExcelHelper.GetCellValue(_row.GetCell(col_attr.ColIndex)), _row.RowNum+1, col_attr.ColName);
-                    if (!r) { this.ErrMsg.AddErrMsg(valid_attr.GetErrMsg()); }
+                    if (!r) { this.ErrMsg.AddErrMsg(valid_attr.GetErrMsg()); break; }
                 }
 
                 if (this.ErrMsg.Count > 0) continue;
@@ -88,10 +96,23 @@ namespace eh.impls
         }
 
         private void SetDataIntoEntity(PropertyInfo p,Object o, ICell cell)
-        {
-            if (!TypeUtil.CompType(p.PropertyType, ExcelHelper.GetCellType(cell))) return;
+        {            
+            if (p.PropertyType == typeof(DateTime))
+            { 
+                if(ExcelHelper.GetCellType(cell)==typeof(string))
+                {
+                    DateTime dt = DateTime.Now;
+                    DateTime.TryParse(cell.StringCellValue, out dt);
+                    p.SetValue(o, dt, null);
+                }
+                else
+                {
+                    p.SetValue(o, cell.DateCellValue, null);
+                }
+                
+            }
 
-            if (p.PropertyType == typeof(DateTime)) p.SetValue(o, cell.DateCellValue, null);
+            if (!TypeUtil.CompType(p.PropertyType, ExcelHelper.GetCellType(cell))) return;
 
             else if (p.PropertyType == typeof(int)) p.SetValue(o, (int)cell.NumericCellValue, null);
 

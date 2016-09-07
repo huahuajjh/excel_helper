@@ -1,4 +1,5 @@
-﻿using eh.attributes;
+﻿using attributes;
+using eh.attributes;
 using eh.attributes.enums;
 using eh.impls;
 using eh.impls.configurations;
@@ -20,10 +21,8 @@ namespace test
         public void TestImportExcel()
         {
             ErrMsg msg = new ErrMsg();
-            ExcelConfiguration cfg = new ExcelConfiguration();
-            cfg.RowIndex = 1;
-            IImport import = ExcelFactory.Instance().GetExcelImporter(cfg,msg);
-            IList<Person> list = import.Import<Person>(new FileStream(@"D:\projects\excel_helper\docs\file.xlsx", FileMode.Open), "p.xlsx");
+            IImport import = ExcelFactory.Instance().GetExcelImporter(new ExcelConfiguration(1, 0, 0),msg);
+            IList<O> list = import.Import<O>(new FileStream(@"F:\a.xls", FileMode.Open));
             if (msg.Count > 0)
             {
                 foreach (var e in msg.GetErrors())
@@ -36,34 +35,84 @@ namespace test
                 Console.WriteLine(list.Count);
                 foreach (var item in list)
                 {
-                    Console.WriteLine(item);
+                    Console.WriteLine(item.Dt);
                 }
             }
         }
     }
 
-    public class Person
+    public class Ticket
     {
-        [Col(1, "B")]
-        [ColDataValid(DataTypeEnum.INT_N)]
-        public int Age { get; set; }
-        
-        [Col(0, "A")]
-        public string Name { get; set; }
-
-        [Col(2,"C")]
+        [Col("A")]
         [ColDataValid(DataTypeEnum.STRING)]
         [ColDataConstraint(ConstraintsEnum.NOTNULL)]
-        public string gender { get; set; }
+        [ColDataMaxlength(20)]
+        public string Name { get; set; }
 
-        [Col(3,"D")]
-        [ColDataValid(DataTypeEnum.DATETIME_N)]
-        public DateTime Time { get; set; }
+        [Col("B")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        [ColDataPhone]
+        public string Phone { get; set; }
 
-        public override string ToString()
-        {
-            return "name=" + Name  + "   age=" + Age+"   gender="+gender+"   time="+Time;
-        }
+        [Col("C")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        [ColDataID]
+        public string IdCard { get; set; }
 
+        [Col("D")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        [ColDataEquals("男", "女")]
+        public string Gender { get; set; }
+
+        [Col("E")]
+        [ColDataValid(DataTypeEnum.INT)]
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        public int SceneryId { get; set; }
+
+        [Col("F")]
+        [ColDataValid(DataTypeEnum.DATETIME)]
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        public DateTime PlayTime { get; set; }
+
+        [Col("G")]
+        [ColDataValid(DataTypeEnum.INT)]
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        public int BuyNumber { get; set; }
+
+        [Col("H")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        [ColDataEquals("是", "否")]
+        public string IsPay { get; set; }
+
+        [Col("I")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        [ColDataMaxlength(20)]
+        public string Community { get; set; }
+
+        [Col("J")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        [ColDataMaxlength(20)]
+        public string Unit { get; set; }
+
+        [Col("K")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        [ColDataMaxlength(200)]
+        public string Remarks { get; set; }
+
+        [Col("L")]
+        [ColDataValid(DataTypeEnum.STRING)]
+        [ColDataMaxlength(20)]
+        public string Recommender { get; set; }
+    }
+
+    public class O
+    {
+        [Col("A")]
+        [ColDataValid(DataTypeEnum.DATETIME)]
+        public DateTime Dt { get; set; }
     }
 }

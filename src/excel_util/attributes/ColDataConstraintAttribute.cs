@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using eh.attributes.enums;
+using eh.util;
 
 namespace eh.attributes
 {
@@ -22,7 +23,7 @@ namespace eh.attributes
                 {
                     case ConstraintsEnum.NOTNULL:
                         {
-                            if (_cell_data == null)
+                            if (_cell_data == null || (TypeUtil.CompType(typeof(string), _cell_data.GetType()) && string.IsNullOrEmpty(_cell_data.ToString().Trim())))
                             {
                                 SetErrMsg(_col_index, _col_name, "不能传入空的值");
                                 return false;

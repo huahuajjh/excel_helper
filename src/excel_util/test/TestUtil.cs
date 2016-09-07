@@ -19,5 +19,24 @@ namespace eh.test
             Assert.AreEqual(true, TypeUtil.CompType(o2.GetType(), o.GetType()));
             Console.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
         }
+
+        [TestMethod]
+        public void TestIsDate()
+        {
+            Assert.AreEqual(true, TypeUtil.IsDate("2016.12.12"));
+            Assert.AreEqual(true, TypeUtil.IsDate("2016-12-12"));
+            Assert.AreEqual(true, TypeUtil.IsDate("2016/12/12"));
+            Assert.AreEqual(true, TypeUtil.IsDate("2016年12月12日"));
+            Assert.AreEqual(true, TypeUtil.IsDate("2016.12.12 12:12:12"));
+            Assert.AreEqual(true, TypeUtil.IsDate("2016年12月12"));
+
+            Assert.AreEqual(false, TypeUtil.IsDate("2016.13.12"));            
+            Assert.AreEqual(false, TypeUtil.IsDate("2016年1212日"));
+            Assert.AreEqual(false, TypeUtil.IsDate("201612月12日"));
+            Assert.AreEqual(false, TypeUtil.IsDate(""));
+            Assert.AreEqual(false, TypeUtil.IsDate("   "));
+            Assert.AreEqual(false, TypeUtil.IsDate(null));
+
+        }
     }
 }

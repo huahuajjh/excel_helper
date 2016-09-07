@@ -1,4 +1,5 @@
 ﻿using eh.attributes;
+using eh.attributes.enums;
 using eh.impls;
 using eh.impls.configurations;
 using eh.impls.errs;
@@ -19,44 +20,53 @@ namespace test
         public void TestExport1()
         {
             ExcelConfiguration cfg = new ExcelConfiguration();
-            cfg.TemplatePath = @"D:\projects\excel_helper\docs\x.xlsx";
+            cfg.TemplatePath = @"G:\gitH project\tms\src\api\TMS\Application\ExcelFile\exportTicket.xlsx";
+            cfg.TemplateRowIndex = 1;
             ErrMsg err = new ErrMsg();
-            IExport export = ExcelFactory.Instance().GetExcelExporter(cfg,err);
-            IList<Person1> list = new List<Person1>();
-            for (int i = 0; i < 300000;i++ )
+            IExport export = ExcelFactory.Instance().GetExcelExporter(cfg, err);
+            IList<Scenery> list = new List<Scenery>();
+            for (int i = 0; i < 300; i++)
             {
-                Person1 p = new Person1();
-                p.Age = i;
-                p.gender = "g" + i;
-                p.Name = "zs" + i;
-                p.Time = DateTime.Now.AddHours(i);
+                Scenery p = new Scenery();
+                p.Id = i;
+                p.Name = i.ToString();
 
                 list.Add(p);
             }
-            MemoryStream ms= export.Export<Person1>(list);
-            FileStream file = new FileStream(@"D:\projects\excel_helper\docs\file.xlsx", FileMode.OpenOrCreate);
+            Byte[] ms = export.Export<Scenery>(list);
+            FileStream file = new FileStream(@"G:\file.xlsx", FileMode.OpenOrCreate);
             BinaryWriter bw = new BinaryWriter(file);
-            bw.Write(ms.ToArray());
+            bw.Write(ms);
             bw.Close();
             file.Close();
-            ms.Close();
-
         }
     }
 
-    public class Person1
+    public class Scenery
     {
-        [Col(1, "B")]
-        public int Age { get; set; }
+        [Col("A")]
+        public int Id { get; set; }
 
-        [Col(0, "A")]
+        [Col("B")]
         public string Name { get; set; }
 
-        [Col(2, "C")]
-        public string gender { get; set; }
-        [Col(3, "D")]
-        public DateTime Time { get; set; }
-
-
+        [Col("C")]
+        public string Remarks { get; set; }
     }
+
+    //public class Person1
+    //{
+    //    [Col(1, "B")]
+    //    public int Age { get; set; }
+
+    //    [Col(0, "A")]
+    //    public string Name { get; set; }
+
+    //    [Col(2, "C")]
+    //    public string gender { get; set; }
+    //    [Col(3, "D")]
+    //    public DateTime Time { get; set; }
+
+
+    //}
 }

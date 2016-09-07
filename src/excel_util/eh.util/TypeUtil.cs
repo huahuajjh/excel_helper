@@ -11,5 +11,17 @@ namespace eh.util
         {
             return t1 == t2 ? true : false;
         }
+
+        public static bool IsDate(string date)
+        {
+            if (string.IsNullOrEmpty(date)) 
+            {
+                return false;
+            }
+
+            DateTime dt = DateTime.Now;
+            bool r = DateTime.TryParse(date,out dt);
+            return r;
+        }
     }
 }

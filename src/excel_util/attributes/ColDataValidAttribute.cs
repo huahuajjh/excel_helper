@@ -17,11 +17,9 @@ namespace eh.attributes
         private string ErrMsg { get; set; }
         public bool Validate(object _cell_data,int _row_index,string _col_name)
         {
+            if (_cell_data == null) return true;
             switch (DataType)
-            {       
-                case DataTypeEnum.STRING:
-                    return Check(typeof(string), _cell_data.GetType(), _row_index, _col_name, "字符串");
-
+            {
                 case DataTypeEnum.INT:
                     return Check(typeof(int), _cell_data.GetType(), _row_index, _col_name, "整数");
 
@@ -29,15 +27,13 @@ namespace eh.attributes
                     return Check(typeof(bool), _cell_data.GetType(), _row_index, _col_name, "布尔");
 
                 case DataTypeEnum.DATETIME:
-                    return Check(typeof(DateTime), _cell_data.GetType(), _row_index, _col_name, "日期");
+                    return CheckDate(_cell_data.ToString(), _row_index, _col_name);
+
+                case DataTypeEnum.DATE:
+                    return CheckDate(_cell_data.ToString(),_row_index,_col_name);
 
                 case DataTypeEnum.FLOAT:
                     return Check(typeof(float), _cell_data.GetType(), _row_index, _col_name, "小数");
-
-
-                case DataTypeEnum.STRING_N:
-                    if (_cell_data as Type == typeof(Nullable)) return true;
-                    else return Check(typeof(string), _cell_data.GetType(), _row_index, _col_name, "字符串");
 
                 case DataTypeEnum.INT_N:
                     if (_cell_data as Type == typeof(Nullable)) return true;
@@ -56,8 +52,7 @@ namespace eh.attributes
                     else return Check(typeof(float), _cell_data.GetType(), _row_index, _col_name, "小数");
 
                 default:
-                    this.ErrMsg = String.Format("{0}行,{1}列错误,未识别的数据类型", _row_index, _col_name);
-                    return false;
+                    return true;
             }
         }
         public string GetErrMsg()
@@ -75,5 +70,17 @@ namespace eh.attributes
             return b;
         }
 
+        private bool CheckDate(string _cell_data, int _col_index, string _col_name)
+        {
+            if(TypeUtil.IsDate(_cell_data))
+            { 
+                return true;
+            }
+            else
+            {
+                this.ErrMsg = String.Format("第[{0}]行,第[{1}]列数据格式错误,日期格式错误",_col_index,_col_name);
+                return false;
+            }
+        }
     }
 }
