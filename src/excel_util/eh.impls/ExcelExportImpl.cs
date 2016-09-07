@@ -28,26 +28,32 @@ namespace eh.impls
             ISheet st = wb.GetSheetAt(Cfg.TemplateSheetIndex);
 
             IteratorObj <T>(st,data);
-
-            using(var ms = new MemoryStream())
+            try
             {
-            //var ms = new MemoryStream();
-                if (wb != null)
+                using (var ms = new MemoryStream())
                 {
-                    wb.Write(ms);
-                    if (ms != null)
+                    //var ms = new MemoryStream();
+                    if (wb != null)
                     {
-                        return ms;
+                        wb.Write(ms);
+                        if (ms != null)
+                        {
+                            return ms;
+                        }
+                        else
+                        {
+                            throw new NullReferenceException("尝试写入内存流，失败");
+                        }
                     }
                     else
                     {
-                        throw new NullReferenceException("尝试写入内存流，失败");
+                        throw new NullReferenceException("生成工作簿异常，失败");
                     }
                 }
-                else
-                {
-                    throw new NullReferenceException("生成工作簿异常，失败");
-                }
+            }
+            finally
+            {
+                wb.Close();
             }
         }
 

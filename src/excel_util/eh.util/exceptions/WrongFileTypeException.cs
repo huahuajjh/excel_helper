@@ -5,6 +5,7 @@ using System.Text;
 
 namespace eh.util.exceptions
 {
+    [Serializable]
     public class WrongFileTypeException:Exception
     {
         public WrongFileTypeException(){}

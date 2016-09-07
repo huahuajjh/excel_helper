@@ -97,8 +97,11 @@ namespace eh.util.helper
         }
         public static IWorkbook CreateWorkbook(int version,string path)
         {
-            if (version.Equals(2003)) return new XSSFWorkbook(path);
-            else return new XSSFWorkbook(path);
+            using(FileStream fs = File.OpenRead(path))
+            {
+                if (version.Equals(2003)) return new XSSFWorkbook(fs);
+                else return new XSSFWorkbook(fs);
+            }
         }
         private static IWorkbook CreateWb2003Or2007(Stream stream, string _filename)
         {

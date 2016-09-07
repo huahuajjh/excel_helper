@@ -20,8 +20,10 @@ namespace test
         public void TestImportExcel()
         {
             ErrMsg msg = new ErrMsg();
-            IImport import = ExcelFactory.Instance().GetExcelImporter(new ExcelConfiguration(),msg);
-            IList<Person> list = import.Import<Person>(new FileStream(@"D:\projects\excel_helper\docs\p.xlsx", FileMode.Open), "p.xlsx");
+            ExcelConfiguration cfg = new ExcelConfiguration();
+            cfg.RowIndex = 1;
+            IImport import = ExcelFactory.Instance().GetExcelImporter(cfg,msg);
+            IList<Person> list = import.Import<Person>(new FileStream(@"D:\projects\excel_helper\docs\file.xlsx", FileMode.Open), "p.xlsx");
             if (msg.Count > 0)
             {
                 foreach (var e in msg.GetErrors())
@@ -44,7 +46,6 @@ namespace test
     {
         [Col(1, "B")]
         [ColDataValid(DataTypeEnum.INT_N)]
-
         public int Age { get; set; }
         
         [Col(0, "A")]
@@ -54,6 +55,7 @@ namespace test
         [ColDataValid(DataTypeEnum.STRING)]
         [ColDataConstraint(ConstraintsEnum.NOTNULL)]
         public string gender { get; set; }
+
         [Col(3,"D")]
         [ColDataValid(DataTypeEnum.DATETIME_N)]
         public DateTime Time { get; set; }
