@@ -22,7 +22,7 @@ namespace attributes
                 this.row_index = _row_index;
                 this.col_name = _col_name;
                 if (_cell_data == null || string.IsNullOrEmpty(_cell_data.ToString())) return true;
-                string idCard = _cell_data.ToString().ToLower();
+                string idCard = _cell_data.ToString().ToLower().Trim();
                 if (new Regex("^\\d{15}$").IsMatch(idCard))
                     return true;
                 else if (new Regex("^\\d{17}[0-9xX]$").IsMatch(idCard))

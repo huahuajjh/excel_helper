@@ -116,7 +116,7 @@ namespace eh.impls
 
             else if (p.PropertyType == typeof(int)) p.SetValue(o, (int)cell.NumericCellValue, null);
 
-            else if (p.PropertyType == typeof(string)) p.SetValue(o, cell.StringCellValue, null);
+            else if (p.PropertyType == typeof(string)) p.SetValue(o, cell.StringCellValue.Trim(), null);
 
             else return;
             
