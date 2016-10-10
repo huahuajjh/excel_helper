@@ -20,7 +20,7 @@ namespace test
         public void TestExport1()
         {
             ExcelConfiguration cfg = new ExcelConfiguration();
-            cfg.TemplatePath = @"G:\gitH project\tms\src\api\TMS\Application\ExcelFile\exportTicket.xlsx";
+            cfg.TemplatePath = @"f:\exportTicket.xlsx";
             cfg.TemplateRowIndex = 1;
             ErrMsg err = new ErrMsg();
             IExport export = ExcelFactory.Instance().GetExcelExporter(cfg, err);
@@ -34,7 +34,7 @@ namespace test
                 list.Add(p);
             }
             Byte[] ms = export.Export<Scenery>(list);
-            FileStream file = new FileStream(@"G:\file.xlsx", FileMode.OpenOrCreate);
+            FileStream file = new FileStream(@"f:\file.xlsx", FileMode.OpenOrCreate);
             BinaryWriter bw = new BinaryWriter(file);
             bw.Write(ms);
             bw.Close();

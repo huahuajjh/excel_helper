@@ -22,7 +22,7 @@ namespace test
         {
             ErrMsg msg = new ErrMsg();
             IImport import = ExcelFactory.Instance().GetExcelImporter(new ExcelConfiguration(1, 0, 0),msg);
-            IList<O> list = import.Import<O>(new FileStream(@"F:\a.xls", FileMode.Open));
+            IList<ReferencesDto> list = import.Import<ReferencesDto>(new FileStream(@"D:\projects\yueyouyuebei\src\TravelAgent.Web\TravelAgent.Web\template\references.xls", FileMode.Open));
             if (msg.Count > 0)
             {
                 foreach (var e in msg.GetErrors())
@@ -35,7 +35,7 @@ namespace test
                 Console.WriteLine(list.Count);
                 foreach (var item in list)
                 {
-                    Console.WriteLine(item.Dt);
+                    Console.WriteLine(item.ToString());
                 }
             }
         }
@@ -111,8 +111,24 @@ namespace test
 
     public class O
     {
+        public int Id { get; set; }
+
         [Col("A")]
-        [ColDataValid(DataTypeEnum.DATETIME)]
-        public DateTime Dt { get; set; }
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        public string Name { get; set; }
+
+        [Col("B")]
+        //[ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        public string ShortName { get; set; }
+
+        [Col("C")]
+        [ColDataValid(DataTypeEnum.INT)]
+        [ColDataConstraint(ConstraintsEnum.NOTNULL)]
+        public int AreaId { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("name={0},shortname={1},areaid={2}", Name, ShortName, AreaId);
+        }
     }
 }
