@@ -89,14 +89,14 @@ namespace eh.impls
                 //put data into entity
                 ICell cell = _row.GetCell(col_attr.ColIndex);
                 SetDataIntoEntity(p, e,cell);
-
             }
 
             return e;
         }
 
         private void SetDataIntoEntity(PropertyInfo p,Object o, ICell cell)
-        {            
+        {
+
             if (p.PropertyType == typeof(DateTime))
             { 
                 if(ExcelHelper.GetCellType(cell)==typeof(string))
@@ -111,12 +111,42 @@ namespace eh.impls
                 }
                 
             }
+            
+
+            if(p.PropertyType == typeof(string))
+            {
+                switch (cell.CellType)
+                {
+                    case CellType.Blank:
+                        p.SetValue(o, "NA", null);
+                        break;
+                    case CellType.Boolean:
+                        p.SetValue(o, "NA", null);
+                        break;
+                    case CellType.Error:
+                        p.SetValue(o, "Error", null);
+                        break;
+                    case CellType.Formula:
+                        p.SetValue(o, cell.CellFormula, null);
+                        break;
+                    case CellType.Numeric:
+                        p.SetValue(o, cell.NumericCellValue.ToString(), null);
+                        break;
+                    case CellType.String:
+                        p.SetValue(o, cell.StringCellValue, null);
+                        break;
+                    case CellType.Unknown:
+                        p.SetValue(o, "Unknown", null);
+                        break;
+                    default:
+                        p.SetValue(o, "default", null);
+                        break;
+                }
+            }
 
             if (!TypeUtil.CompType(p.PropertyType, ExcelHelper.GetCellType(cell))) return;
 
             else if (p.PropertyType == typeof(int)) p.SetValue(o, (int)cell.NumericCellValue, null);
-
-            else if (p.PropertyType == typeof(string)) p.SetValue(o, cell.StringCellValue.Trim(), null);
 
             else return;
             
